@@ -14,8 +14,7 @@ var model = {
     },
     welcomeMessage: 'Hello',
     skills: ['HTML', 'CSS', 'Javascript'],
-    biopic: 'https://avatars2.githubusercontent.com/u/9965245?s=460&v=4',
-    display: function() {}
+    biopic: 'https://avatars2.githubusercontent.com/u/9965245?s=460&v=4'
   },
   education: {
     schools: [
@@ -34,8 +33,7 @@ var model = {
         dates: '2016-2018',
         url: 'learn.javascript.ru'
       }
-    ],
-    display: function() {}
+    ]
   },
   work: {
     jobs: [
@@ -46,8 +44,7 @@ var model = {
         dates: '2016-current',
         description: 'front-end developer'
       }
-    ],
-    display: function() {}
+    ]
   },
   projects: {
     projects: [
@@ -57,7 +54,54 @@ var model = {
         description: 'website',
         images: ['', '', '']
       }
-    ],
-    display: function() {}
+    ]
   }
 };
+
+var controller = {
+  init() {
+    view.init();
+  },
+  getBio() {
+    return model.bio;
+  },
+  getEdu() {
+    return model.education;
+  },
+  getWork() {
+    return model.work;
+  },
+  getProjects() {
+    return model.projects;
+  }
+};
+
+var view = {
+  init() {
+    this.renderHeader();
+    this.renderContacts();
+  },
+  renderHeader() {
+    var $header = $('#header');
+    var bio = controller.getBio();
+    var formattedName = HTMLheaderName.replace('%data%', bio.name);
+    var formattedRole = HTMLheaderRole.replace('%data%', bio.role);
+    $header.prepend([formattedName, formattedRole]);
+  },
+  renderContacts() {
+    var $topContacts = $('#topContacts');
+    var $footerContacts = $('#footerContacts');
+    var contacts = controller.getBio().contacts;
+    var formattedContacts = '';
+    Object.keys(contacts).forEach(function(key) {
+      formattedContacts += HTMLcontactGeneric.replace('%contact%', key).replace(
+        '%data%',
+        contacts[key]
+      );
+    });
+    $topContacts.append(formattedContacts);
+    $footerContacts.append(formattedContacts);
+  }
+};
+
+controller.init();
