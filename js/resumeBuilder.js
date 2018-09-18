@@ -82,23 +82,34 @@ var view = {
     this.renderContacts();
   },
   renderHeader() {
-    var $header = $('#header');
     var bio = controller.getBio();
+
+    var $header = $('#header');
+
     var formattedName = HTMLheaderName.replace('%data%', bio.name);
     var formattedRole = HTMLheaderRole.replace('%data%', bio.role);
+    var formattedPic = HTMLbioPic.replace('%data%', bio.biopic);
+    var formattedWelcomeMsg = HTMLwelcomeMsg.replace('%data%', bio.welcomeMessage);
+
     $header.prepend([formattedName, formattedRole]);
+    $header.append([formattedPic, formattedWelcomeMsg, HTMLskillsStart]);
+
+    var $skills = $('#skills');
+    bio.skills.forEach(function(skill) {
+      $skills.append(HTMLskills.replace('%data%', skill));
+    });
   },
   renderContacts() {
+    var contacts = controller.getBio().contacts;
+
     var $topContacts = $('#topContacts');
     var $footerContacts = $('#footerContacts');
-    var contacts = controller.getBio().contacts;
+
     var formattedContacts = '';
-    Object.keys(contacts).forEach(function(key) {
-      formattedContacts += HTMLcontactGeneric.replace('%contact%', key).replace(
-        '%data%',
-        contacts[key]
-      );
-    });
+    for (var key in contacts) {
+      formattedContacts += HTMLcontactGeneric.replace('%contact%', key).replace('%data%', contacts[key]);
+    }
+
     $topContacts.append(formattedContacts);
     $footerContacts.append(formattedContacts);
   }
